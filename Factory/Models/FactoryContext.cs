@@ -6,7 +6,9 @@ namespace Factory.Models
   {
     public DbSet<Engineer> Engineers { get; set; }
     public DbSet<Machine> Machines { get; set; }
-    public DbSet<EngineerMachines> EngineerMachines { get; set; }
+    public DbSet<License> Licenses { get; set; }
+    public DbSet<EngineerMachine> EngineerMachines { get; set; }
+    public DbSet<EngineerLicense> EngineerLicenses { get; set; }
     public FactoryContext(DbContextOptions options) : base(options) { }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
