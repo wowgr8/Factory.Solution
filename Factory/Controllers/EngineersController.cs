@@ -18,13 +18,14 @@ namespace Factory.Controllers
 
     public ActionResult Index()
     {
-      return View(_db.Engineer.ToList());
+      return View(_db.Engineers.ToList());
     }
 
     public ActionResult Create()
     {
       ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "Name");
       ViewBag.LicenseId = new SelectList(_db.Licenses, "LicenseId", "Type");
+      return View();
     }
 
     [HttpPost]
@@ -42,6 +43,7 @@ namespace Factory.Controllers
         _db.EngineerLicenses.Add(new EngineerLicense() {LicenseId = LicenseId, EngineerId = engineer.EngineerId});
         _db.SaveChanges();
       }
+      return RedirectToAction("Index");
     }
   }
 }
