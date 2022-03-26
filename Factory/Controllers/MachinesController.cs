@@ -42,7 +42,7 @@ namespace Factory.Controllers
 
     public ActionResult Details(int id)
     {
-      Machine foundMachine = _.db.Machines
+      Machine foundMachine = _db.Machines
         .Include(machine => machine.JoinEngineerMachine)
         .ThenInclude(join => join.Engineer)
         .FirstOrDefault(model => model.MachineId == id);
