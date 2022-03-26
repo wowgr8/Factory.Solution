@@ -1,0 +1,18 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Factory.Models.License
+
+<h2>Enter new license</h2>
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.Name)
+  @Html.TextBoxFor(model => model.Name)
+  
+  @Html.Label("Select Engineer")
+  @Html.DropDownList("EngineerId", "Select Engineer")
+
+  <input type="submit" value="Save" />
+}
