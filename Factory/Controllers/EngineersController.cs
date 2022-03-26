@@ -45,5 +45,32 @@ namespace Factory.Controllers
       }
       return RedirectToAction("Index");
     }
+
+    public ActionResult Details(int id)
+    {
+      ViewBag.MachineId = new SelectList(_db.Machines, "MachineId", "Name");
+      ViewBag.LicenseId = new SelectList(_db.Licenses, "LicenseId", "Type");
+      Engineer foundEngineer = _db.Engineers
+        .Include(engineer => engineer.JoinEngineerMachine)
+        .ThenInclude(joinMachine => joinMachine.Machine)
+        .Include(engineer => engineer.JoinEngineerLicense)
+        .ThenInclude(joinLicense => joinLicense.License)
+        .FirstOrDefault(model => model.EngineerId == id);
+      return View(foundEngineer);
+    }
+
+    public ActionResult Edit(int id)
+    {
+      Engineer foundEngineer = _db.Engineers.FirstOrDefault(engineer => engineer.EngineerId == id);
+      return View(foundEngineer);
+    }
+
+    [HttpPost]
+    public ActionResult Edit(Engineer engineer)
+    {
+      _db.Entry(engineer).State = EntityState.Modified;
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
   }
 }
