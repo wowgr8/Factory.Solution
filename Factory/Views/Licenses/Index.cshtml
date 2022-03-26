@@ -15,7 +15,7 @@
 <ul>
   @foreach (License license in Model)
   {
-    <li>@Html.ActionLink($"{license.Name}", "Details", new { id = license.LicenseId})</li>
+    <li>@Html.ActionLink($"{license.Type}", "Details", new { id = license.LicenseId})</li>
   }
 </ul>
 
