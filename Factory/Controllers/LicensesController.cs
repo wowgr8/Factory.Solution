@@ -68,5 +68,48 @@ namespace Factory.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-  }   
-}   
+
+    public ActionResult Delete(int id)
+    {
+      License foundLicense = _db.Licenses.FirstOrDefault(license => license.LicenseId == id);
+      return View(foundLicense);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      License foundLicense = _db.Licenses.FirstOrDefault(license => license.LicenseId == id);
+      _db.Licenses.Remove(foundLicense);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    public ActionResult AddEngineer(int id)
+    {
+      License foundLicense = _db.Licenses.FirstOrDefault(license => license.LicenseId == id);
+      ViewBag.EngineerId = new SelectList(_db.Engineers, "EngineerId", "Name");
+      return View(foundLicense);
+    }
+
+    [HttpPost]
+    public ActionResult AddEngineer(License license, int EngineerId)
+    {
+      if (EngineerId !=0)
+      {
+        _db.EngineerLicenses.Add(new EngineerLicense() {EngineerId = EngineerId, LicenseId = license.LicenseId});
+        _db.SaveChanges();
+      }
+      return RedirectToAction("Details", new { id = license.LicenseId});
+    }
+
+    [HttpPost]
+    public ActionResult DeleteEngineer(int joinId)
+    {
+      var joinEntry = _db.EngineerLicenses.FirstOrDefault(entry => entry.EngineerLicenseId == joinId);
+      int savedLicense = joinEntry.LicenseId;
+      _db.EngineerLicenses.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Details", new {id = savedLicense});
+    }
+  }
+}  
