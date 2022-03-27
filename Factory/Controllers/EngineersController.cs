@@ -89,7 +89,7 @@ namespace Factory.Controllers
     }
 
     [HttpPost]
-    public ActionResult DeletePatient(int joinId)
+    public ActionResult DeleteMachine(int joinId)
     {
       var joinEntry = _db.EngineerMachines.FirstOrDefault(entry => entry.EngineerMachineId == joinId);
       int savedEngineer = joinEntry.EngineerId;
@@ -107,5 +107,27 @@ namespace Factory.Controllers
       _db.SaveChanges();
       return RedirectToAction("Details", new { id = savedEngineer});
     }
+
+    [HttpPost]
+    public ActionResult AddMachine(Engineer engineer, int MachineId)
+    {
+      if (MachineId !=0)
+      {
+        _db.EngineerMachines.Add(new EngineerMachine() {MachineId = MachineId, EngineerId = engineer.EngineerId});
+        _db.SaveChanges();
+      }
+      return RedirectToAction("Details", new { id = engineer.EngineerId});
+    }
+
+    [HttpPost]
+    public ActionResult AddLicense(Engineer engineer, int LicenseId)
+    {
+      if (LicenseId != 0)
+      {
+        _db.EngineerLicenses.Add(new EngineerLicense() {LicenseId = LicenseId, EngineerId = engineer.EngineerId});
+        _db.SaveChanges();
+      }
+      return RedirectToAction("Details", new { id = engineer.EngineerId});
+    }    
   }
 }
