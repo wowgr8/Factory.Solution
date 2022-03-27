@@ -1,0 +1,19 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Factory.Models.License
+
+<h2>Edit</h2>
+
+<h4>Edit this License: @Html.DisplayFor(model => model.Type)</h4>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.LicenseId)
+
+  @Html.LabelFor(model => model.Type)
+  @Html.EditorFor(model => model.Type)
+
+  <input type="submit" value="Save"/>
+}
