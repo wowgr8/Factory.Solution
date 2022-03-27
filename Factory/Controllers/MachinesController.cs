@@ -87,8 +87,7 @@ public ActionResult Delete(int id)
     [HttpPost]
     public ActionResult AddEngineer(Machine machine, int EngineerId)
     {
-      bool isDuplicate = machine.isDuplicateEngineer(_db, EngineerId);
-      if (EngineerId !=0 && isDuplicate == false)
+      if (EngineerId !=0)
       {
         _db.EngineerMachines.Add(new EngineerMachine() {EngineerId = EngineerId, MachineId = machine.MachineId});
         _db.SaveChanges();
