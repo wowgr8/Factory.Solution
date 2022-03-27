@@ -1,0 +1,43 @@
+@{
+  Layout = "_Layout";
+}
+@model Factory.Models.License
+
+<h2>License Details</h2>
+<hr>
+<h4><strong>@Html.DisplayNameFor(model => model.Type): </strong>@Html.DisplayFor(model => model.Type)</h4>
+
+<hr>
+
+<h4><strong>Engineers:</strong> (@Model.JoinEngineerLicense.Count)</h4>
+@if (Model.JoinEngineerLicense.Count == 0)
+{
+  <p>This License hasn't been assigned any engineers.</p>
+}
+else
+{
+  <ul>
+    @foreach (var join in Model.JoinEngineerLicense)
+    {
+      @using (Html.BeginForm("DeleteEngineer", "Licenses"))
+      {
+        @Html.Hidden("joinId", @join.EngineerLicenseId)
+
+        @Html.ActionLink($"{join.Engineer.Name}", "Details", "Engineers", new {id = join.Engineer.EngineerId})  
+        <input type="submit" value="Delete"  class="btn btn-danger"/>
+      }
+    }  
+  </ul>
+}
+
+@using (Html.BeginForm("AddEngineer","Licenses"))
+{
+  @Html.HiddenFor(model => model.LicenseId)
+  @Html.Label("Certify Engineer")
+  @Html.DropDownList("EngineerId", "Select Engineer")
+  <input type="submit" value="add" />
+}
+<hr>
+
+<p>@Html.ActionLink("Edit License", "Edit", new { id = Model.LicenseId })</p>
+<p>@Html.ActionLink("Delete License", "Delete", new { id = Model.LicenseId})</p>
