@@ -68,5 +68,42 @@ namespace Factory.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
-  }  
-}  
+
+public ActionResult Delete(int id)
+    {
+      Machine foundMachine = _db.Machines.FirstOrDefault(machine => machine.MachineId == id);
+      return View(foundMachine);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      Machine foundMachine = _db.Machines.FirstOrDefault(machine => machine.MachineId == id);
+      _db.Machines.Remove(foundMachine);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public ActionResult AddEngineer(Machine machine, int EngineerId)
+    {
+      bool isDuplicate = machine.isDuplicateEngineer(_db, EngineerId);
+      if (EngineerId !=0 && isDuplicate == false)
+      {
+        _db.EngineerMachines.Add(new EngineerMachine() {EngineerId = EngineerId, MachineId = machine.MachineId});
+        _db.SaveChanges();
+      }
+      return RedirectToAction("Details", new { id = machine.MachineId});
+    }
+
+    [HttpPost]
+    public ActionResult DeleteEngineer(int joinId)
+    {
+      var joinEntry = _db.EngineerMachines.FirstOrDefault(entry => entry.EngineerMachineId == joinId);
+      int savedMachine = joinEntry.MachineId;
+      _db.EngineerMachines.Remove(joinEntry);
+      _db.SaveChanges();
+      return RedirectToAction("Details", new {id = savedMachine});
+    }
+  }
+}
